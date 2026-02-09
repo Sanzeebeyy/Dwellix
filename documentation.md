@@ -7,7 +7,7 @@
 Notes:
 - for database, use postgresql (make database in postgres)
 - just change the URL of DATABASE in database.py
-- donot use Base.metadata.create_all(engine) in main.py---now Alembic will handle all those tasks
+- donot use Base.metadata.create_all(engine) in main.py, now Alembic will handle all those tasks
 
 powershell: [all scripts inside ...\backend>]
 ``` 
