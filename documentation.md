@@ -14,7 +14,7 @@ powershell: [all scripts inside ...\backend>]
 alembic init alembic
 ```
 - alembic.ini -> put the DATABASE URL 
-- alembic\env.py : <br>
+- alembic\env.py :
 1. from app.database import Base 
 2. from app import models 
 3. target_metadata = None -> target_metadata = Base.metadata
