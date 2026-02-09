@@ -12,18 +12,15 @@ Notes:
 powershell: [all scripts inside ...\backend>]
 ``` 
 alembic init alembic
-
-#alembic.ini -> put the DATABASE URL 
-
-#alembic/env.py, 
-from app.database import Base 
-from app import models 
-target_metadata = None -> target_metadata = Base.metadata
-
-#any changes in models.py
-
+```
+- alembic.ini -> put the DATABASE URL 
+- alembic/env.py, 
+    from app.database import Base 
+    from app import models 
+    target_metadata = None -> target_metadata = Base.metadata
+- any changes in models.py
+```
 alembic revision --autogenerate -m "message about what was changed"
-
 alembic upgrade head
 ```
 ## Day 1 :
