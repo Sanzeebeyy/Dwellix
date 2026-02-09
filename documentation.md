@@ -14,10 +14,10 @@ powershell: [all scripts inside ...\backend>]
 alembic init alembic
 ```
 - alembic.ini -> put the DATABASE URL 
-- alembic/env.py, 
-    from app.database import Base 
-    from app import models 
-    target_metadata = None -> target_metadata = Base.metadata
+- alembic\env.py : <br>
+1. from app.database import Base 
+2. from app import models 
+3. target_metadata = None -> target_metadata = Base.metadata
 - any changes in models.py
 ```
 alembic revision --autogenerate -m "message about what was changed"
