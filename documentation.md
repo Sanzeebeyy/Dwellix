@@ -24,3 +24,11 @@ alembic revision --autogenerate -m "message about what was changed"
 alembic upgrade head
 ```
 ## Day 1 :
+
+- Created most of the necessary tables for the app
+- Fixed nullable issues
+- User registration with unique and valid email
+- Update user feature
+- Update password after verifying the old password feature
+
+## Day 2 :
