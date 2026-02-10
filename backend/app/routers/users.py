@@ -10,7 +10,8 @@ router = APIRouter(
 )
 
 @router.post('/register')
-def register_user(request:schemas.CreateUser, db:Session = Depends(get_db)):
+def register_user(request:schemas.CreateUser,
+                  db:Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.email == request.email).first()
 
     if user:
@@ -22,7 +23,7 @@ def register_user(request:schemas.CreateUser, db:Session = Depends(get_db)):
     try:
         valid = validate_email(request.email)
         email = valid.email
-        new_user = models.User(email = email, phone = request.phone, password_hash = hashed_password)
+        new_user = models.User(email = email, name = request.name,  phone = request.phone, password_hash = hashed_password)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
@@ -30,4 +31,13 @@ def register_user(request:schemas.CreateUser, db:Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="Email not valid")
 
     return new_user
-    
+
+@router.put('/update/{id}')
+def update_user(id:int,
+                request:schemas.UpdateUser,
+                db:Session = Depends(get_db)):
+        db.query(models.User).filter(models.User.id == id).update(request.dict(exclude_unset=True), synchronize_session=False)
+        db.commit()
+        
+        return {"Profile Updated"}
+
