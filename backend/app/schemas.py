@@ -28,8 +28,9 @@ class UpdateUser(BaseModel):
     class Config:
         orm_mode = True
 
-# class UpdatePassword(BaseModel):
-#     password: str
+class UpdatePassword(BaseModel):
+    old_password: str
+    new_password: str
 
-#     class Config:
-#         orm_mode = True
+    class Config:
+        orm_mode = True

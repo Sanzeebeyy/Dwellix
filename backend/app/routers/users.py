@@ -41,3 +41,24 @@ def update_user(id:int,
         
         return {"Profile Updated"}
 
+
+@router.put('/update/password/{id}')
+def update_password(id:int,
+                    request:schemas.UpdatePassword,
+                    db:Session=Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+    
+    real_password = user.password_hash
+    
+    if not (hashing.Hash.verify_password(request.old_password, real_password)):
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="Old Password didn't match") 
+    
+    new_hashed_password = hashing.Hash.bcrypt(request.new_password)
+
+    user.password_hash = new_hashed_password
+
+    db.commit()
+
+    return {"Password Updated Successfully"}
+
+
