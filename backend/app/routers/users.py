@@ -3,6 +3,7 @@ from .. import schemas, models, database, hashing
 from sqlalchemy.orm import Session
 from ..database import get_db
 from email_validator import validate_email, EmailNotValidError
+from ..oauth2 import get_current_user
 
 router = APIRouter(
     prefix='/user',
@@ -15,7 +16,7 @@ def register_user(request:schemas.CreateUser,
     user = db.query(models.User).filter(models.User.email == request.email).first()
 
     if user:
-        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="Email already registered")
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="Email Already Registered")
     
     hashed_password = hashing.Hash.bcrypt(request.password)
 
@@ -28,30 +29,40 @@ def register_user(request:schemas.CreateUser,
         db.commit()
         db.refresh(new_user)
     except EmailNotValidError:
-        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="Email not valid")
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="Email Not Valid")
 
     return new_user
 
-@router.put('/update/{id}')
-def update_user(id:int,
-                request:schemas.UpdateUser,
+@router.put('/update')
+def update_user(request:schemas.UpdateUser,
+                current_user:schemas.User = Depends(get_current_user),
                 db:Session = Depends(get_db)):
-        db.query(models.User).filter(models.User.id == id).update(request.dict(exclude_unset=True), synchronize_session=False)
+        
+
+        db.query(models.User).filter(models.User.email == current_user.email).update(request.dict(exclude_unset=True), synchronize_session=False)
         db.commit()
         
-        return {"Profile Updated"}
+        user = db.query(models.User).filter(models.User.email == current_user.email).first()
+
+        return {"details":"Profile Updated","update":{
+            "name":user.name,
+            "email":user.email,
+            "gender":user.gender,
+            "bio":user.bio,
+            "profile_picture":user.profile_picture_url
+        }}
 
 
-@router.put('/update/password/{id}')
-def update_password(id:int,
-                    request:schemas.UpdatePassword,
+@router.put('/update/password')
+def update_password(request:schemas.UpdatePassword,
+                    current_user: schemas.User = Depends(get_current_user),
                     db:Session=Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == id).first()
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
     
     real_password = user.password_hash
     
     if not (hashing.Hash.verify_password(request.old_password, real_password)):
-        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="Old Password didn't match") 
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="Old Password Didn't Match") 
     
     new_hashed_password = hashing.Hash.bcrypt(request.new_password)
 

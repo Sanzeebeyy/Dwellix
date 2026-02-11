@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from . import models
 from .database import engine
 
-from .routers import users
+from .routers import users, auth
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -25,6 +25,7 @@ app.add_middleware(
 # models.Base.metadata.create_all(engine) [Alembic will do the job]
 
 app.include_router(users.router)
+app.include_router(auth.router)
 
 
 app.mount("/static", StaticFiles(directory="static")) # for static files ie. Images
