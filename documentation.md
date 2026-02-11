@@ -36,3 +36,5 @@ alembic upgrade head
 - Created login route
 - Added authentication and authorization using OAuth2
 - Updated user update and password update routes according to logged in user
+- Public user profile view added
+- Account delete after verification added

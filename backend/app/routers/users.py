@@ -10,6 +10,9 @@ router = APIRouter(
     tags=["User"]
 )
 
+
+
+
 @router.post('/register')
 def register_user(request:schemas.CreateUser,
                   db:Session = Depends(get_db)):
@@ -33,6 +36,33 @@ def register_user(request:schemas.CreateUser,
 
     return new_user
 
+
+
+
+@router.get('/', response_model=schemas.ShowUser)
+def show_self(db:Session = Depends(get_db),
+              current_user: schemas.User = Depends(get_current_user)):
+        user = db.query(models.User).filter(models.User.email == current_user.email).first()
+
+        return user
+
+
+
+
+
+@router.get('/{user_id}', response_model= schemas.ShowPublicUser)
+def show_user(user_id:int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User Not Found") 
+
+    return user
+
+
+
+
+
 @router.put('/update')
 def update_user(request:schemas.UpdateUser,
                 current_user:schemas.User = Depends(get_current_user),
@@ -51,6 +81,11 @@ def update_user(request:schemas.UpdateUser,
             "bio":user.bio,
             "profile_picture":user.profile_picture_url
         }}
+
+
+
+
+
 
 
 @router.put('/update/password')
@@ -73,3 +108,20 @@ def update_password(request:schemas.UpdatePassword,
     return {"Password Updated Successfully"}
 
 
+
+
+
+@router.delete('/')
+def delete_user(request:schemas.DeleteUser,
+                current_user: schemas.User = Depends(get_current_user),
+                db:Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    
+    real_password = user.password_hash
+    if not hashing.Hash.verify_password(request.password, real_password):
+        raise HTTPException(status_code=401, detail="Incorrect Password")
+    
+    db.delete(user)
+    db.commit()
+    return "Account Deleted"
+    

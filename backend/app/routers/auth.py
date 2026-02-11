@@ -7,7 +7,7 @@ from ..hashing import Hash
 
 router = APIRouter(
     prefix='/login',
-    tags=['/login']
+    tags=['Login']
 )
 
 @router.post('/')

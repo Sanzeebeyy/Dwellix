@@ -19,7 +19,27 @@ class User(BaseModel):
     
     class Config:
         orm_mode = True
-    pass
+
+
+
+
+class ShowPublicUser(BaseModel):
+    name: str
+    bio: str | None = None
+    gender: str | None = None
+    role: UserRole
+    profile_picture_url: str| None = None
+
+    class Config:
+        orm_mode = True
+
+class ShowUser(ShowPublicUser):
+
+    phone: str
+    email: str
+
+    class Config:
+        orm_mode = True
 
 class CreateUser(BaseModel):
     name: str
@@ -34,7 +54,6 @@ class CreateUser(BaseModel):
 
 class UpdateUser(BaseModel):
     name: str
-    email:str
     phone:str
     bio: str|None = None
     gender: str | None = None
@@ -51,6 +70,11 @@ class UpdatePassword(BaseModel):
     class Config:
         orm_mode = True
 
+class DeleteUser(BaseModel):
+    password: str
+
+    class Config:
+        orm_mode = True
 
 
 class Token(BaseModel):
