@@ -32,3 +32,7 @@ alembic upgrade head
 - Update password after verifying the old password feature
 
 ## Day 2 :
+
+- Created login route
+- Added authentication and authorization using OAuth2
+- Updated user update and password update routes according to logged in user
