@@ -79,6 +79,7 @@ def update_user(request:schemas.UpdateUser,
             "email":user.email,
             "gender":user.gender,
             "bio":user.bio,
+            "role":user.role,
             "profile_picture":user.profile_picture_url
         }}
 

@@ -32,4 +32,4 @@ app.mount("/static", StaticFiles(directory="static")) # for static files ie. Ima
 
 @app.get('/')
 def app_start():
-    return {"Message":"Server is Live"}
+    return {"Message":"Server Is Live"}

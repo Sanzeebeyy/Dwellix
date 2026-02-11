@@ -13,7 +13,7 @@ class User(Base):
     phone = Column(String, nullable=False)
     bio = Column(String)
     gender = Column(String)
-    role = Column(Enum('seeker', 'owner', 'both', name = "user_role"))
+    role = Column(Enum('seeker', 'owner', 'both', name = "user_role"),default='seeker')
     profile_picture_url = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
