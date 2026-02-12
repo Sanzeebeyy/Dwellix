@@ -1,4 +1,8 @@
 from fastapi import APIRouter, Response, Depends, status, HTTPException
+
+from fastapi import File, UploadFile
+import uuid
+
 from .. import schemas, models, database, hashing
 from sqlalchemy.orm import Session
 from ..database import get_db
@@ -84,8 +88,24 @@ def update_user(request:schemas.UpdateUser,
         }}
 
 
+IMGDIR = 'static/images/profile_images/'
 
+@router.put('/update/profile-photo')
+async def update_profile_picture(file: UploadFile = File(...),
+                                 db:Session = Depends(get_db),
+                                 current_user: schemas.User = Depends(get_current_user)):
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    if not user:
+         raise HTTPException(status_code=404 , detail="User Not Found")
 
+    file.filename = f"{uuid.uuid4()}.jpg"
+    contents = await file.read()
+    with open(f"{IMGDIR}{file.filename}","wb") as f:
+         f.write(contents)
+
+    user.profile_picture_url = f"static/images/profile_images/{file.filename}"
+    db.commit()
+    return file.filename
 
 
 
