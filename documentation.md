@@ -39,3 +39,8 @@ alembic upgrade head
 - Added own profile view
 - Added public user profile view
 - Added account delete after verification
+
+## Day 3 :
+
+- Added user profile picture upload and update
+- 

@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from . import models
 from .database import engine
 
-from .routers import users, auth
+from .routers import users, auth , rooms
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -26,6 +26,7 @@ app.add_middleware(
 
 app.include_router(users.router)
 app.include_router(auth.router)
+app.include_router(rooms.router)
 
 
 app.mount("/static", StaticFiles(directory="static")) # for static files ie. Images

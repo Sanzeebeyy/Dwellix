@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from enum import Enum
 
+#---------------Users Schemas-----------------#
+
 class UserRole(str, Enum):
     seeker = "seeker"
     owner = "owner"
@@ -24,6 +26,7 @@ class User(BaseModel):
 
 
 class ShowPublicUser(BaseModel):
+    id: int
     name: str
     bio: str | None = None
     gender: str | None = None
@@ -90,3 +93,77 @@ class TokenData(BaseModel):
     
     class Config():
         orm_mode = True 
+
+
+
+
+#---------------Rooms Schemas-----------------#
+
+
+class RoomType(str, Enum):
+    single = "single"
+    shared = "shared"
+    flat = "flat"
+
+class RoomStatus(str, Enum):
+    available = "available"
+    occupied = "occupied"
+    hidden = "hidden"
+
+
+
+class Rooms(BaseModel):
+    id:int
+    owner: ShowPublicUser
+    title: str
+    description: str
+    area: str
+    city: str
+    country: str
+    rent: int
+    deposit: int
+    is_furnished: bool
+    min_stay_months: int
+
+    room_type: RoomType
+    status: RoomStatus
+
+    class Config:
+        orm_mode = True
+
+
+
+class CreateRoom(BaseModel):
+    title: str
+    description: str
+    area: str
+    city: str
+    country: str
+    rent: int
+    deposit: int
+    is_furnished: bool
+    min_stay_months: int
+
+    room_type: RoomType
+    status: RoomStatus
+
+    class Config:
+        orm_mode = True
+
+class UpdateRoom(BaseModel):
+    title: str
+    description: str
+    area: str
+    city: str
+    country: str
+    rent: int
+    deposit: int
+    is_furnished: bool
+    min_stay_months: int
+
+    room_type: RoomType
+    status: RoomStatus
+
+    class Config:
+        orm_mode = True
+
