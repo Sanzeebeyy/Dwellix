@@ -45,3 +45,4 @@ alembic upgrade head
 - Added user profile picture upload and update
 - Added room post
 - Added room stats update only by the owner
+- Added room view (specific and general)
