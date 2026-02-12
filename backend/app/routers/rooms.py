@@ -48,3 +48,26 @@ def create_rooms(request: schemas.CreateRoom,
     return new_room
 
 
+@router.put('/update-room/{room_id}')
+def create_rooms(room_id:int,
+                 request: schemas.UpdateRoom,
+                 db: Session = Depends(get_db),
+                 current_user : schemas.User = Depends(get_current_user)):
+    
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    room = db.query(models.Room).filter(models.Room.id == room_id).first()
+    
+    if not room:
+        raise HTTPException(status_code=404 , detail="Room Not Found")
+
+    if room.owner_id != user.id:
+        raise HTTPException(status_code=403, detail="You Are Not Allowed To Edit This Room")
+    
+    for key, value in request.dict(exclude_unset=True).items():
+        setattr(room, key, value)
+    
+    db.commit()
+    db.refresh(room)
+
+    return room
+
