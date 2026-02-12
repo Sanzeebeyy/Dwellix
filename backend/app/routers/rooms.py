@@ -10,11 +10,20 @@ router = APIRouter(
     tags=["Room"]
 )
 
-@router.get('/', response_model=List[schemas.Rooms])
-def show_rooms(db: Session = Depends(get_db)):
+@router.get('/', response_model= List[schemas.ShowRoomGeneral])
+def show_rooms_general(db: Session = Depends(get_db)):
     rooms = db.query(models.Room).all()
-
     return rooms
+
+
+@router.get('/{room_id}', response_model=schemas.Room)
+def show_room(room_id:int,
+               db: Session = Depends(get_db)):
+    room = db.query(models.Room).filter(models.Room.id == room_id).first()
+    return room
+
+
+
 
 @router.post('/create-room')
 def create_rooms(request: schemas.CreateRoom,
@@ -49,7 +58,7 @@ def create_rooms(request: schemas.CreateRoom,
 
 
 @router.put('/update-room/{room_id}')
-def create_rooms(room_id:int,
+def update_rooms(room_id:int,
                  request: schemas.UpdateRoom,
                  db: Session = Depends(get_db),
                  current_user : schemas.User = Depends(get_current_user)):

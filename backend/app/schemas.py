@@ -112,9 +112,8 @@ class RoomStatus(str, Enum):
 
 
 
-class Rooms(BaseModel):
+class Room(BaseModel):
     id:int
-    owner: ShowPublicUser
     title: str
     description: str
     area: str
@@ -127,6 +126,7 @@ class Rooms(BaseModel):
 
     room_type: RoomType
     status: RoomStatus
+    owner: ShowPublicUser
 
     class Config:
         orm_mode = True
@@ -167,3 +167,13 @@ class UpdateRoom(BaseModel):
     class Config:
         orm_mode = True
 
+class ShowRoomGeneral(BaseModel):
+    id:int
+    title: str
+    area: str
+    city: str
+    country: str
+    rent: int
+
+    class Config:
+        orm_mode = True
