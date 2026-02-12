@@ -132,7 +132,7 @@ def update_password(request:schemas.UpdatePassword,
 
 
 
-@router.delete('/')
+@router.delete('/delete-user')
 def delete_user(request:schemas.DeleteUser,
                 current_user: schemas.User = Depends(get_current_user),
                 db:Session = Depends(get_db)):

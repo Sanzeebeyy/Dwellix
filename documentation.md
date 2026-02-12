@@ -46,3 +46,6 @@ alembic upgrade head
 - Added room post
 - Added room stats update only by the owner
 - Added room view (specific and general)
+- Added room delete only by the owner
+
+## Day 4 :

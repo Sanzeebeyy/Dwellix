@@ -6,7 +6,7 @@ from ..oauth2 import get_current_user
 from .. import models, schemas
 
 router = APIRouter(
-    prefix='/room',
+    prefix='/rooms',
     tags=["Room"]
 )
 
@@ -20,6 +20,10 @@ def show_rooms_general(db: Session = Depends(get_db)):
 def show_room(room_id:int,
                db: Session = Depends(get_db)):
     room = db.query(models.Room).filter(models.Room.id == room_id).first()
+
+    if not room:
+        raise HTTPException(status_code=404, detail="Room Not Found")
+
     return room
 
 
@@ -35,7 +39,7 @@ def create_rooms(request: schemas.CreateRoom,
     
     if user.role not in ['owner','both']:
         raise HTTPException(status_code=403, detail="Only Owners Can Post Rooms")
-    if room_counts > 10:
+    if room_counts >= 10:
         raise HTTPException(status_code=403, detail="Not Allowed To Post More Than 10 Rooms")
 
     new_room = models.Room(owner_id = user.id,
@@ -55,6 +59,25 @@ def create_rooms(request: schemas.CreateRoom,
     db.refresh(new_room)
 
     return new_room
+
+
+@router.delete('/delete-room/{room_id}')
+def delete_room(room_id:int,
+                db:Session = Depends(get_db),
+                current_user : schemas.User = Depends(get_current_user)):
+    room = db.query(models.Room).filter(models.Room.id == room_id).first()
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+
+    if not room:
+        raise HTTPException(status_code=404, detail="Room Not Found")
+    if (room.owner_id != user.id):
+        raise HTTPException(status_code=403, detail="Not Allowed To Delete")
+    
+    db.delete(room)
+    db.commit()
+
+    return "Room Deleted Successfully"
+    
 
 
 @router.put('/update-room/{room_id}')
