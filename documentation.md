@@ -51,4 +51,5 @@ alembic upgrade head
 ## Day 4 :
 
 - Added filtered search for room using query parameters
--
+- Added multiple photo uploads of the room
+- 

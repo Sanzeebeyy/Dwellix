@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from enum import Enum
+from typing import List
 
 #---------------Users Schemas-----------------#
 
@@ -111,6 +112,13 @@ class RoomStatus(str, Enum):
     hidden = "hidden"
 
 
+class RoomImages(BaseModel):
+    id:int
+    image_url : str
+
+    class Config:
+        orm_mode = True
+
 
 class Room(BaseModel):
     id:int
@@ -127,6 +135,8 @@ class Room(BaseModel):
     room_type: RoomType
     status: RoomStatus
     owner: ShowPublicUser
+
+    images:List[RoomImages]
 
     class Config:
         orm_mode = True

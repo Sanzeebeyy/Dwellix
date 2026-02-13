@@ -101,7 +101,7 @@ async def update_profile_picture(file: UploadFile = File(...),
     file.filename = f"{uuid.uuid4()}.jpg"
     contents = await file.read()
     with open(f"{IMGDIR}{file.filename}","wb") as f:
-         f.write(contents)
+        f.write(contents)
 
     user.profile_picture_url = f"static/images/profile_images/{file.filename}"
     db.commit()

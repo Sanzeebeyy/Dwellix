@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from typing import List
 from sqlalchemy.orm import Session
 from ..database import get_db
 from ..oauth2 import get_current_user
 from .. import models, schemas
+import uuid
 
 router = APIRouter(
     prefix='/rooms',
@@ -50,7 +51,6 @@ def show_rooms_general(area:str | None = None,
     
     rooms = query.all()
     return rooms
-
 
 
 
@@ -140,3 +140,35 @@ def update_rooms(room_id:int,
     db.refresh(room)
 
     return room
+
+
+IMGDIR = "static/images/room_images/"
+
+@router.put('/update-room/{room_id}/room-photos')
+async def add_room_photos(room_id:int, files: List[UploadFile] = File(...),
+                          db: Session = Depends(get_db),
+                          current_user : schemas.User = Depends(get_current_user)):
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+
+    room = db.query(models.Room).filter(models.Room.id == room_id).first()
+
+    if room.owner_id != user.id : 
+        raise HTTPException(status_code=403, detail="You Are Not Allowed To Edit This Room")
+    
+    for file in files:
+        file.filename = f"{uuid.uuid4()}.jpg"
+        contents = await file.read()
+
+        with open (f'{IMGDIR}{file.filename}',"wb") as f:
+            f.write(contents)
+
+        new_image = models.RoomImage(room_id = room_id, image_url = f"/static/images/room_images/{file.filename}")
+
+        db.add(new_image)
+    
+    db.commit()
+
+    return {"Images Uploaded Successfully"}
+    
+
+    
