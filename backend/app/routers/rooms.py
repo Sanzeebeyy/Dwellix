@@ -11,9 +11,47 @@ router = APIRouter(
 )
 
 @router.get('/', response_model= List[schemas.ShowRoomGeneral])
-def show_rooms_general(db: Session = Depends(get_db)):
-    rooms = db.query(models.Room).all()
+def show_rooms_general(area:str | None = None,
+                       city:str | None = None,
+                       country:str |None = None,
+                       max_rent:int | None = None,
+                       max_deposit:int | None = None,
+                       is_furnished:bool | None = None,
+                       room_type:schemas.RoomType |None = None,
+                       status: schemas.RoomStatus | None = schemas.RoomStatus.available,
+                       db: Session = Depends(get_db)):
+    
+    query = db.query(models.Room)
+
+    if area:
+        query = query.filter(models.Room.area == area)
+    
+    if city:
+        query = query.filter(models.Room.city == city)
+
+    if country:
+        query = query.filter(models.Room.country == country)
+
+    if max_rent:
+        query = query.filter(models.Room.rent <= max_rent + 1000)
+    
+    if max_deposit:
+        query = query.filter(models.Room.deposit <= max_deposit + 100)
+
+    if is_furnished is not None:
+        query = query.filter(models.Room.is_furnished == is_furnished)
+
+    if status:
+        query = query.filter(models.Room.status == status)
+
+    if room_type:
+        query = query.filter(models.Room.room_type == room_type)
+    
+    
+    rooms = query.all()
     return rooms
+
+
 
 
 @router.get('/{room_id}', response_model=schemas.Room)
@@ -102,4 +140,3 @@ def update_rooms(room_id:int,
     db.refresh(room)
 
     return room
-

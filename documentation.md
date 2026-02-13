@@ -49,3 +49,6 @@ alembic upgrade head
 - Added room delete only by the owner
 
 ## Day 4 :
+
+- Added filtered search for room using query parameters
+-
