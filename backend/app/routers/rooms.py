@@ -152,6 +152,9 @@ async def add_room_photos(room_id:int, files: List[UploadFile] = File(...),
 
     room = db.query(models.Room).filter(models.Room.id == room_id).first()
 
+    if not room:
+        raise HTTPException(status_code=404, detail="Room Not Found")
+
     if room.owner_id != user.id : 
         raise HTTPException(status_code=403, detail="You Are Not Allowed To Edit This Room")
     
