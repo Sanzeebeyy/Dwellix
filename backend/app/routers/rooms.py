@@ -144,7 +144,7 @@ def update_rooms(room_id:int,
 
 IMGDIR = "static/images/room_images/"
 
-@router.put('/update-room/{room_id}/room-photos')
+@router.post('/update-room/{room_id}/room-photos')
 async def add_room_photos(room_id:int, files: List[UploadFile] = File(...),
                           db: Session = Depends(get_db),
                           current_user : schemas.User = Depends(get_current_user)):
