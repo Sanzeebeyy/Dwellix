@@ -54,3 +54,8 @@ alembic upgrade head
 - Added multiple photo uploads of the room
 
 ## Day 5 :
+
+- Added post application for specific room
+- Duplicate applications case handled
+- Own room application case handled
+-

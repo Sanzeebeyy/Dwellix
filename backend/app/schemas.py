@@ -187,3 +187,18 @@ class ShowRoomGeneral(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+#---------------Applications Schemas-----------------#
+
+class ApplicationStatus(str, Enum):
+    pending = "pending"
+    accepted = "accepted"
+    rejected = "rejected"
+
+class CreateApplication(BaseModel):
+    bargain_amount: int
+    status: ApplicationStatus
+
+    class Config:
+        orm_mode = True
