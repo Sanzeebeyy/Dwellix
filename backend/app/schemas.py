@@ -202,3 +202,13 @@ class CreateApplication(BaseModel):
 
     class Config:
         orm_mode = True
+
+class ShowMyApplication(BaseModel):
+    id:int
+    room_id:int
+    bargain_amount: int
+    status: ApplicationStatus
+    room: Room
+
+    class Config:
+        orm_mode = True

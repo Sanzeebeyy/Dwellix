@@ -47,3 +47,11 @@ def apply(room_id:int,
     db.refresh(new_application)
 
     return new_application
+
+@router.get('/my', response_model=List[schemas.ShowMyApplication])
+def show_my_applications(db:Session = Depends(get_db),
+                         current_user: schemas.User = Depends(get_current_user)):
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    applications = db.query(models.Application).filter(models.Application.applicant_id == user.id).all()
+
+    return applications

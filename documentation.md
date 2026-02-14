@@ -58,4 +58,4 @@ alembic upgrade head
 - Added post application for specific room
 - Duplicate applications case handled
 - Own room application case handled
--
+- See all your applications for all applied rooms
