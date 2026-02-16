@@ -59,3 +59,8 @@ alembic upgrade head
 - Duplicate applications case handled
 - Own room application case handled
 - See all your applications for all applied rooms
+
+## Day 6 :
+
+- Added show applications for a room only by the owner with filters
+- 

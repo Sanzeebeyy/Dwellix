@@ -55,3 +55,33 @@ def show_my_applications(db:Session = Depends(get_db),
     applications = db.query(models.Application).filter(models.Application.applicant_id == user.id).all()
 
     return applications
+
+@router.get('/see_applications', response_model=List[schemas.ShowApplications])
+def show_applications(room_id:int|None = None,
+                      bargain_amount:int|None = None,
+                      status:str|None = 'pending',
+                      db:Session = Depends(get_db),
+                      current_user:schemas.User = Depends(get_current_user)):
+    
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    if user.role not in ["owner", "both"]:
+        raise HTTPException(status_code=403, detail="Not Allowed")
+    
+
+
+    query = db.query(models.Application).join(models.Room).filter(
+        models.Room.owner_id == user.id
+    )
+
+    if room_id is not None:
+        query = query.filter(models.Application.room_id == room_id)
+
+    if bargain_amount is not None:
+        query = query.filter(models.Application.bargain_amount < bargain_amount+1000)
+    
+    if status is not None:
+        query = query.filter(models.Application.status == status)
+
+    applications = query.all()
+
+    return applications
