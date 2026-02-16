@@ -63,4 +63,4 @@ alembic upgrade head
 ## Day 6 :
 
 - Added show applications for a room only by the owner with filters
-- 
+- Added general and specific application views

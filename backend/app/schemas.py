@@ -223,3 +223,14 @@ class ShowApplications(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class ShowGeneralApplications(BaseModel):
+    id:int
+    room_id:int
+    applicant_id: int
+    status: ApplicationStatus
+    bargain_amount:int
+
+    class Config:
+        orm_mode = True
