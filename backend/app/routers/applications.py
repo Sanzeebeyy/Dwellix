@@ -191,7 +191,33 @@ def show_rejected_applications(room_id:int,
     return query.all()
 
 
+@router.get('/my/accepted',response_model=List[schemas.ForSeekerAcceptedApplications])
+def show_accepted_applications(db:Session = Depends(get_db),
+                               current_user:schemas.User = Depends(get_current_user)):
+    
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    if user.role not in ["seeker", "both"]:
+        raise HTTPException(status_code=403, detail="Not Allowed")
+    
+    query = db.query(models.Application).filter(models.Application.applicant_id == user.id)
+    
+    query = query.filter(models.Application.status == 'accepted')
+    
+    return query.all()
 
+@router.get('/my/rejected',response_model=List[schemas.ForSeekerRejectedApplications])
+def show_rejected_applications(db:Session = Depends(get_db),
+                               current_user:schemas.User = Depends(get_current_user)):
+    
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    if user.role not in ["seeker", "both"]:
+        raise HTTPException(status_code=403, detail="Not Allowed")
+    
+    query = db.query(models.Application).filter(models.Application.applicant_id == user.id)
+    
+    query = query.filter(models.Application.status == 'rejected')
+    
+    return query.all()
 
 
 
