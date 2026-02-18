@@ -156,5 +156,43 @@ def reject_application(application_id:int,
 
 
 
+@router.get('/accepted',response_model=List[schemas.AcceptedApplications])
+def show_accepted_applications(room_id:int,
+                               db:Session = Depends(get_db),
+                               current_user:schemas.User = Depends(get_current_user)):
+    
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    if user.role not in ["owner", "both"]:
+        raise HTTPException(status_code=403, detail="Not Allowed")
+    
+    query = db.query(models.Application).join(models.Room).filter(models.Room.owner_id == user.id,
+                                                                        models.Application.status == 'accepted')
+    
+    if room_id:
+        query = query.filter(models.Application.room_id == room_id)
+    
+    return query.all()
+
+@router.get('/rejected',response_model=List[schemas.RejectedApplications])
+def show_rejected_applications(room_id:int,
+                               db:Session = Depends(get_db),
+                               current_user:schemas.User = Depends(get_current_user)):
+    
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    if user.role not in ["owner", "both"]:
+        raise HTTPException(status_code=403, detail="Not Allowed")
+    
+    query = db.query(models.Application).join(models.Room).filter(models.Room.owner_id == user.id,
+                                                                        models.Application.status == 'rejected')
+    
+    if room_id:
+        query = query.filter(models.Application.room_id == room_id)
+    
+    return query.all()
+
+
+
+
+
 
 

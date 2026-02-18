@@ -208,6 +208,27 @@ class ShowRoomForAccepted(BaseModel):
     class Config:
         orm_mode = True
 
+class ShowRoomForSeekerAccepted(BaseModel):
+    id:int
+    title: str
+    description: str
+    area: str
+    city: str
+    country: str
+    rent: int
+    deposit: int
+    is_furnished: bool
+    min_stay_months: int
+
+    room_type: RoomType
+    status: RoomStatus
+
+    images:List[RoomImages]
+    owner: ShowUser
+
+    class Config:
+        orm_mode = True
+
 
 #---------------Applications Schemas-----------------#
 
@@ -266,13 +287,49 @@ class AcceptedApplicant(BaseModel):
     class Config:
         orm_mode = True
 
+class RejectedApplications(BaseModel):
+    id: int
+    room_id: int
+    applicant: ShowPublicUser
+    bargain_amount: int
+    status:ApplicationStatus
+    room: ShowRoomForAccepted
+
+    class Config:
+        orm_mode = True
+
 class AcceptedApplications(BaseModel):
     id: int
     room_id: int
     applicant: AcceptedApplicant
     bargain_amount: int
     status:ApplicationStatus
+    room: ShowRoomForSeekerAccepted
+
+    class Config:
+        orm_mode = True
+
+
+
+
+
+
+class ForSeekerRejectedApplications(BaseModel):
+    id: int
+    room_id: int
+    bargain_amount: int
+    status:ApplicationStatus
     room: ShowRoomForAccepted
+
+    class Config:
+        orm_mode = True
+
+class ForSeekerAcceptedApplications(BaseModel):
+    id: int
+    room_id: int
+    bargain_amount: int
+    status:ApplicationStatus
+    room: ShowRoomForSeekerAccepted
 
     class Config:
         orm_mode = True
