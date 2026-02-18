@@ -71,4 +71,6 @@ alembic upgrade head
 - Added show Accepted Applications with contact details
 - Added show Rejected Applications 
 - Did above two for seeker(tenants) too
-- Added bookmark/favorite a room for later by a user
+
+## Day 8 :
+
