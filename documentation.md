@@ -64,3 +64,9 @@ alembic upgrade head
 
 - Added show applications for a room only by the owner with filters
 - Added general and specific application views
+
+## Day 7 :
+
+- Added accept and reject applications by valid owner only
+- Added show Accepted Applications with contact details
+- Added bookmark/favorite a room for later by a user

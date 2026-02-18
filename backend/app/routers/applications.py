@@ -97,12 +97,63 @@ def show_application(application_id:int,
         raise HTTPException(status_code=403, detail="Not Allowed")
     
     query = db.query(models.Application).join(models.Room).filter(
-        models.Room.owner_id == user.id, models.Application.id == application_id
+        models.Room.owner_id == user.id,
+        models.Application.id == application_id
     )
 
     application = query.first()
 
     return application
+
+
+@router.put('/{application_id}/accept')
+def accpet_application(application_id:int,
+                       db:Session = Depends(get_db),
+                       current_user:schemas.User = Depends(get_current_user)):
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    if user.role not in ["owner", "both"]:
+        raise HTTPException(status_code=403, detail="Not Allowed")
+    
+
+    
+    application = db.query(models.Application).join(models.Room).filter(models.Room.owner_id == user.id,
+                                                                        models.Application.id == application_id).first()
+
+    if not application:
+        raise HTTPException(status_code=404, detail="Application Not Found")
+
+    if application.status != "pending":
+        raise HTTPException(status_code=400, detail="Application Already Processed")
+
+    application.status = 'accepted'
+    db.commit()
+
+    return "Application Accepted"
+
+@router.put('/{application_id}/reject')
+def reject_application(application_id:int,
+                       db:Session = Depends(get_db),
+                       current_user:schemas.User = Depends(get_current_user)):
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    if user.role not in ["owner", "both"]:
+        raise HTTPException(status_code=403, detail="Not Allowed")
+    
+    application = db.query(models.Application).join(models.Room).filter(models.Room.owner_id == user.id,
+                                                                        models.Application.id == application_id).first()
+
+    if not application:
+        raise HTTPException(status_code=404, detail="Application Not Found")
+
+    if application.status != "pending":
+        raise HTTPException(status_code=400, detail="Application Already Processed")
+    
+    application.status = 'rejected'
+
+    db.commit()
+
+    return "Application Rejected"
+
+
 
 
 
