@@ -26,7 +26,7 @@ def apply(room_id:int,
         raise HTTPException(status_code=403, detail="Not Allowed To Apply")
 
     if room.owner_id == applicant.id:
-        raise HTTPException(status_code=403, detail="Not Allowed To Apply For Own Room")
+        raise HTTPException(status_code=403, detail="Not Allowed To Apply")
 
     application = db.query(models.Application).filter(
         models.Application.room_id == room.id,
