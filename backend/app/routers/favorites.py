@@ -34,3 +34,25 @@ def favorite(room_id:int,
     return new_favorite
 
 
+@router.get('/', response_model=List[schemas.ShowRoomGeneral])
+def show_favorites(area:str|None = None,
+                   city:str|None = None,
+                   country:str|None = None,
+                   db:Session = Depends(get_db),
+                   current_user: schemas.User = Depends(get_current_user)):
+    
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+
+    user_id = user.id
+
+    query = db.query(models.Room).join(models.Favorite,
+                                       models.Favorite.room_id == models.Room.id).filter(models.Favorite.user_id == user_id)
+
+    if area:
+        query.filter(models.Room.area == area)
+    if city:
+        query.filter(models.Room.city == city)
+    if country:
+        query.filter(models.Room.country == country)
+    
+    return query.all()
