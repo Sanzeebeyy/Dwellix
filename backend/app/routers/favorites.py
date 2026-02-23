@@ -71,9 +71,9 @@ def show_favorites(area:str|None = None,
     return query.all()
 
 @router.delete('/{fav_id}')
-def delete_user(fav_id:int,
-                current_user: schemas.User = Depends(get_current_user),
-                db:Session = Depends(get_db)):
+def remove_favorite(fav_id:int,
+                    current_user: schemas.User = Depends(get_current_user),
+                    db:Session = Depends(get_db)):
     
     user = db.query(models.User).filter(models.User.email == current_user.email).first()
     
