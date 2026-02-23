@@ -19,6 +19,10 @@ def favorite(room_id:int,
 
     user_id = user.id
 
+    room = db.query(models.Room).filter(models.Room.id == room_id).first()
+    if not room:
+        raise HTTPException(status_code=404, detail="Room Not Found")
+
     already_favorite = db.query(models.Favorite).filter(models.Favorite.user_id == user_id,
                                                         models.Favorite.room_id == room_id).first()
     
@@ -65,3 +69,22 @@ def show_favorites(area:str|None = None,
         query.filter(models.Room.status == status)
     
     return query.all()
+
+@router.delete('/{fav_id}')
+def delete_user(fav_id:int,
+                current_user: schemas.User = Depends(get_current_user),
+                db:Session = Depends(get_db)):
+    
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+    
+    favorite = db.query(models.Favorite).filter(models.Favorite.id == fav_id).first()
+
+    if not favorite:
+        raise HTTPException(status_code=404, detail="Favorite Not Found")
+
+    if favorite.user_id != user.id:
+        raise HTTPException(status_code=403, detail="Not Allowed To Unfavorite")
+
+    db.delete(favorite)
+    db.commit()
+    return "Favorite Removed"
