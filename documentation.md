@@ -74,3 +74,5 @@ alembic upgrade head
 
 ## Day 8 :
 
+- Added favorite a certain room
+- Added view all the favorited room of specific user
