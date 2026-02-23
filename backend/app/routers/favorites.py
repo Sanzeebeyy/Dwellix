@@ -38,6 +38,9 @@ def favorite(room_id:int,
 def show_favorites(area:str|None = None,
                    city:str|None = None,
                    country:str|None = None,
+                   max_deposit: int|None = None,
+                   max_rent: int|None = None,
+                   status: str|None = None,
                    db:Session = Depends(get_db),
                    current_user: schemas.User = Depends(get_current_user)):
     
@@ -54,5 +57,11 @@ def show_favorites(area:str|None = None,
         query.filter(models.Room.city == city)
     if country:
         query.filter(models.Room.country == country)
+    if max_deposit:
+        query.filter(models.Room.deposit <= max_deposit+100)
+    if max_rent:
+        query.filter(models.Room.rent <= max_rent+1000)
+    if status:
+        query.filter(models.Room.status == status)
     
     return query.all()
