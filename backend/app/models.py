@@ -109,3 +109,25 @@ class RoomView(Base):
     room_id = Column(Integer, ForeignKey("rooms.id"))
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+
+class Chat(Base):
+    __tablename__ = 'chats'
+
+    id = Column(Integer, primary_key=True, index=True)
+    user1_id = Column(Integer, ForeignKey("users.id"))
+    user2_id = Column(Integer, ForeignKey("users.id"))
+
+    messages = relationship("Message", back_populates='chat')
+
+class Message(Base):
+    __tablename__ = 'messagess'
+
+    id = Column(Integer, primary_key=True, index=True)
+    chat_id = Column(Integer, ForeignKey("chats.id"))
+    sender_id = Column(Integer, ForeignKey("users.id"))
+    message_text = Column(String)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    chat = relationship("Chat", back_populates='messages')

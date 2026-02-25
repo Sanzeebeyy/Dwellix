@@ -78,3 +78,7 @@ alembic upgrade head
 - Added view all the favorited room of specific user
 - Added more filters to show favorited rooms
 - Added remove from favorite
+
+## Day 9 :
+
+- Initialized Chats System
