@@ -83,3 +83,10 @@ alembic upgrade head
 
 - Initialized chats system with database
 - Added get chats and message endpoints
+- Added create chat only when application is accepted
+- Added a feature of chats per room, not per user to maintain fairness
+- Next, Make websockets endpoints and connection manager for actual data transfer
+
+## Day 10 (future) :
+
+- Next, Make websockets endpoints and connection manager for actual data transfer

@@ -23,7 +23,6 @@ def show_chats(db:Session = Depends(get_db),
 
     chats = db.query(models.Chat).filter(
         or_(
-
         models.Chat.user1_id == user_id,
         models.Chat.user2_id == user_id
         )
