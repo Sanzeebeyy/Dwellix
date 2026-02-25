@@ -215,7 +215,7 @@ def show_rejected_applications(room_id:int,
 
 
 @router.get('/my/accepted',response_model=List[schemas.ForSeekerAcceptedApplications])
-def show_accepted_applications(db:Session = Depends(get_db),
+def show_my_accepted_applications(db:Session = Depends(get_db),
                                current_user:schemas.User = Depends(get_current_user)):
     
     user = db.query(models.User).filter(models.User.email == current_user.email).first()
@@ -229,7 +229,7 @@ def show_accepted_applications(db:Session = Depends(get_db),
     return query.all()
 
 @router.get('/my/rejected',response_model=List[schemas.ForSeekerRejectedApplications])
-def show_rejected_applications(db:Session = Depends(get_db),
+def show_my_rejected_applications(db:Session = Depends(get_db),
                                current_user:schemas.User = Depends(get_current_user)):
     
     user = db.query(models.User).filter(models.User.email == current_user.email).first()

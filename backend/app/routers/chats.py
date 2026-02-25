@@ -57,7 +57,7 @@ def show_chats(db:Session = Depends(get_db),
 
 
 
-@router.get('{chat_id}/messages', response_model=List[schemas.ShowMessage])
+@router.get('/{chat_id}/messages', response_model=List[schemas.ShowMessage])
 def show_messages(chat_id: int,
                   db: Session = Depends(get_db),
                   current_user: schemas.User = Depends(get_current_user)):
