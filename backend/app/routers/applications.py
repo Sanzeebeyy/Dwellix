@@ -129,7 +129,6 @@ def accpet_application(application_id:int,
     application.status = 'accepted'
 
     existing_chat = db.query(models.Chat).filter(
-        and_(
             or_(
                 and_(
                     models.Chat.user1_id == user.id,
@@ -139,18 +138,18 @@ def accpet_application(application_id:int,
                     models.Chat.user1_id == application.applicant_id,
                     models.Chat.user2_id == user.id
                 )
-            ),
-            models.Chat.room_id == application.room_id
-        )
+            )
     ).first()
 
     if not existing_chat:
         
-        new_chat = models.Chat(user1_id = user.id, user2_id = application.applicant_id, room_id = application.room_id)
+        new_chat = models.Chat(user1_id = user.id, user2_id = application.applicant_id)
         db.add(new_chat)
         
     db.commit()    
-    return "Application Accepted, You Can Chat Now"
+    
+    return {"detail":"Application Accepted, You Can Chat Now",
+            "chat_id": existing_chat.id if existing_chat else new_chat.id}
 
 
 @router.put('/{application_id}/reject')

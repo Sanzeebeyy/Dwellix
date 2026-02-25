@@ -114,14 +114,10 @@ class RoomView(Base):
 
 class Chat(Base):
     __tablename__ = 'chats'
-    __table_args__ = (
-        UniqueConstraint('user1_id', 'user2_id', 'room_id', name='unique_room_chat'),
-    )
 
     id = Column(Integer, primary_key=True, index=True)
     user1_id = Column(Integer, ForeignKey("users.id"))
     user2_id = Column(Integer, ForeignKey("users.id"))
-    room_id = Column(Integer, ForeignKey("rooms.id"))
 
     messages = relationship("Message", back_populates='chat')
 
