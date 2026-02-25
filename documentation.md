@@ -81,4 +81,5 @@ alembic upgrade head
 
 ## Day 9 :
 
-- Initialized Chats System
+- Initialized chats system with database
+-n

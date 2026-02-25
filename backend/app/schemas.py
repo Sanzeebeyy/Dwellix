@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from enum import Enum
 from typing import List
+from datetime import datetime
 
 #---------------Users Schemas-----------------#
 
@@ -330,6 +331,19 @@ class ForSeekerAcceptedApplications(BaseModel):
     bargain_amount: int
     status:ApplicationStatus
     room: ShowRoomForSeekerAccepted
+
+    class Config:
+        orm_mode = True
+
+
+
+#---------------Chat and Message Schemas-----------------#
+
+class ShowMessage(BaseModel):
+    id: int
+    sender_id: int
+    message_text: str
+    created_at: datetime
 
     class Config:
         orm_mode = True
