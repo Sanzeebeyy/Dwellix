@@ -143,6 +143,28 @@ class Room(BaseModel):
         orm_mode = True
 
 
+class ShowRoom(BaseModel):
+    id:int
+    title: str
+    description: str
+    area: str
+    city: str
+    country: str
+    rent: int
+    deposit: int
+    is_furnished: bool
+    min_stay_months: int
+
+    room_type: RoomType
+    status: RoomStatus
+    # owner: ShowPublicUser
+
+    images:List[RoomImages]
+
+    class Config:
+        orm_mode = True
+
+
 
 class CreateRoom(BaseModel):
     title: str

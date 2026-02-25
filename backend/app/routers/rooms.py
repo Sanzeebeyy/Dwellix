@@ -54,7 +54,7 @@ def show_rooms_general(area:str | None = None,
 
 
 
-@router.get('/{room_id}', response_model=schemas.Room)
+@router.get('/{room_id}', response_model=schemas.ShowRoom)
 def show_room(room_id:int,
                db: Session = Depends(get_db)):
     room = db.query(models.Room).filter(models.Room.id == room_id).first()
