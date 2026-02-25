@@ -85,8 +85,8 @@ alembic upgrade head
 - Added get chats and message endpoints
 - Added create chat only when application is accepted
 - Added a feature of chats per room, not per user to maintain fairness
-- Next, Make websockets endpoints and connection manager for actual data transfer
+- Reverted chat per room feature and replaced it with a better idea 😉
 
 ## Day 10 (future) :
 
-- Next, Make websockets endpoints and connection manager for actual data transfer
+- Make websockets endpoints and connection manager for actual data transfer
