@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..oauth2 import get_current_user
 from .. import models, schemas
-
+from sqlalchemy import and_ , or_
 
 router = APIRouter(
     prefix='/application',
@@ -118,6 +118,7 @@ def accpet_application(application_id:int,
     
     application = db.query(models.Application).join(models.Room).filter(models.Room.owner_id == user.id,
                                                                         models.Application.id == application_id).first()
+    
 
     if not application:
         raise HTTPException(status_code=404, detail="Application Not Found")
@@ -126,9 +127,31 @@ def accpet_application(application_id:int,
         raise HTTPException(status_code=400, detail="Application Already Processed")
 
     application.status = 'accepted'
-    db.commit()
 
-    return "Application Accepted"
+    existing_chat = db.query(models.Chat).filter(
+        and_(
+            or_(
+                and_(
+                    models.Chat.user1_id == user.id,
+                    models.Chat.user2_id == application.applicant_id
+                ),
+                and_(
+                    models.Chat.user1_id == application.applicant_id,
+                    models.Chat.user2_id == user.id
+                )
+            ),
+            models.Chat.room_id == application.room_id
+        )
+    ).first()
+
+    if not existing_chat:
+        
+        new_chat = models.Chat(user1_id = user.id, user2_id = application.applicant_id, room_id = application.room_id)
+        db.add(new_chat)
+        
+    db.commit()    
+    return "Application Accepted, You Can Chat Now"
+
 
 @router.put('/{application_id}/reject')
 def reject_application(application_id:int,

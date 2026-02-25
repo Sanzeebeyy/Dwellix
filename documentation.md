@@ -82,4 +82,4 @@ alembic upgrade head
 ## Day 9 :
 
 - Initialized chats system with database
--n
+- Added get chats and message endpoints
