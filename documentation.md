@@ -1,3 +1,5 @@
+# Backend Start
+
 ## Day 0 :
 
 - Initialized the .venv
@@ -87,6 +89,18 @@ alembic upgrade head
 - Added a feature of chats per room, not per user to maintain fairness
 - Reverted chat per room feature and replaced it with a better idea 😉
 
-## Day 10 (future) :
+## Day 10 :
 
-- Make websockets endpoints and connection manager for actual data transfer
+- Added connection manager for websockets
+- Minor bug fixes
+
+## Day 11 :
+
+- Added ws get current user for token verification for chat
+- Added ws chat finally 
+
+# Major Backend Completed
+
+# Day 12 :
+
+- 
