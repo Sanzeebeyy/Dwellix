@@ -99,7 +99,7 @@ alembic upgrade head
 - Added ws get current user for token verification for chat
 - Added ws chat finally 
 - Added minor .gitignore and .gitkeep
-- Completed Feature heavy tasks of the app
+- Completed feature heavy tasks for backend of the app
 
 # Major Backend Completed
 
