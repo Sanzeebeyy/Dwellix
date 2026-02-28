@@ -103,6 +103,14 @@ alembic upgrade head
 
 # Major Backend Completed
 
-# Day 12 :
+## Day 12 :
+- ##### Couldn't help but more backend
 
-- 
+- Installed Redis with ubuntu 
+- Added rate limit function in rate_limits.py
+- Added limits to requests at crucial end points such as register, login, apply and post
+- (remember to open ubuntu for redis to work and system to work as we have implemented redis now)
+```
+redis-cli ping
+```
+o/p: PONG ie. redis running
