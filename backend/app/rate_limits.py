@@ -14,5 +14,6 @@ async def init_rate_limiter():
     await FastAPILimiter.init(redis_connection)
 
 login_limit = RateLimiter(times=5,seconds=60)
+register_limit = RateLimiter(times=5,seconds=60)
 apply_limit = RateLimiter(times=10, seconds=3600)
 create_room_limit = RateLimiter(times=10, seconds=3600)

@@ -4,13 +4,14 @@ from fastapi.security import OAuth2PasswordRequestForm
 from .. import token, models
 from ..database import get_db
 from ..hashing import Hash
+from ..rate_limits import login_limit
 
 router = APIRouter(
     prefix='/login',
     tags=['Login']
 )
 
-@router.post('/')
+@router.post('/', dependencies=[Depends(login_limit)])
 def login_user(request:OAuth2PasswordRequestForm = Depends(),
                db:Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.email == request.username).first()

@@ -9,6 +9,8 @@ from ..database import get_db
 from email_validator import validate_email, EmailNotValidError
 from ..oauth2 import get_current_user
 
+from ..rate_limits import register_limit
+
 router = APIRouter(
     prefix='/user',
     tags=["User"]
@@ -17,7 +19,7 @@ router = APIRouter(
 
 
 
-@router.post('/register')
+@router.post('/register', dependencies=[Depends(register_limit)])
 def register_user(request:schemas.CreateUser,
                   db:Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.email == request.email).first()

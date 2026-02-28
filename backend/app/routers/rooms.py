@@ -5,6 +5,7 @@ from ..database import get_db
 from ..oauth2 import get_current_user
 from .. import models, schemas
 import uuid
+from ..rate_limits import create_room_limit
 
 router = APIRouter(
     prefix='/rooms',
@@ -67,7 +68,7 @@ def show_room(room_id:int,
 
 
 
-@router.post('/create-room')
+@router.post('/create-room',dependencies=[Depends(create_room_limit)])
 def create_rooms(request: schemas.CreateRoom,
                  db: Session = Depends(get_db),
                  current_user : schemas.User = Depends(get_current_user)):

@@ -5,13 +5,15 @@ from ..database import get_db
 from ..oauth2 import get_current_user
 from .. import models, schemas
 from sqlalchemy import and_ , or_
+from ..rate_limits import apply_limit
+
 
 router = APIRouter(
     prefix='/application',
     tags=["Applications"]
 )
 
-@router.post('/apply/{room_id}')
+@router.post('/apply/{room_id}', dependencies=[Depends(apply_limit)])
 def apply(room_id:int,
           request: schemas.CreateApplication,
           db:Session = Depends(get_db),
