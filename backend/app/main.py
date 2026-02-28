@@ -7,6 +7,8 @@ from .routers import users, auth , rooms, applications, favorites, chats
 
 from fastapi.middleware.cors import CORSMiddleware
 
+from .rate_limits import init_rate_limiter
+
 
 app = FastAPI()
 
@@ -34,6 +36,11 @@ app.include_router(chats.router)
 
 app.mount("/static", StaticFiles(directory="static")) # for static files ie. Images
 
+@app.on_event("startup")
+async def startup():
+    await init_rate_limiter()
+
 @app.get('/')
 def app_start():
     return {"Message":"Server Is Live"}
+
