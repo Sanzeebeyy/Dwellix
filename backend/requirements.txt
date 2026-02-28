@@ -8,3 +8,5 @@ psycopg2-binary # for postgresql
 alembic
 email-validator
 websockets
+fastapi-limiter
+redis
