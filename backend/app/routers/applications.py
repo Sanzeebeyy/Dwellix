@@ -50,6 +50,30 @@ def apply(room_id:int,
 
     return new_application
 
+@router.delete('/delete/{application_id}')
+def delete_application(application_id:int,
+                     db:Session = Depends(get_db),
+                     current_user:schemas.User = Depends(get_current_user)):
+    
+    user = db.query(models.User).filter(models.User.email == current_user.email).first()
+
+    application = db.query(models.Application).filter(models.Application.id == application_id).first()
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User Not Found")
+    
+    if not application:
+        raise HTTPException(status_code=404, detail="Application Not Found")
+
+    if (application.applicant_id != user.id):
+        raise HTTPException(status_code=403, detail="Not Authorized To Delete The Application")
+    
+    db.delete(application)
+    db.commit()
+    return "Application Deleted"
+    
+
+
 @router.get('/my', response_model=List[schemas.ShowMyApplication])
 def show_my_applications(db:Session = Depends(get_db),
                          current_user: schemas.User = Depends(get_current_user)):
