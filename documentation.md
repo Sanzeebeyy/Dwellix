@@ -114,3 +114,8 @@ alembic upgrade head
 redis-cli ping
 ```
 o/p: PONG ie. redis running
+
+## Day 13 :
+
+- Added a missing feature of deleting applications from the tenant side
+- Fixed a minor user update issue in user update route

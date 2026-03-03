@@ -58,11 +58,11 @@ class CreateUser(BaseModel):
 
 
 class UpdateUser(BaseModel):
-    name: str
-    phone:str
+    name: str | None = None
+    phone:str | None = None
     bio: str|None = None
     gender: str | None = None
-    role : UserRole
+    role : UserRole | None = None
     profile_picture_url: str|None = None
 
     class Config:
