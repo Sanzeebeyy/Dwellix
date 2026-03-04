@@ -119,3 +119,11 @@ o/p: PONG ie. redis running
 
 - Added a missing feature of deleting applications from the tenant side
 - Fixed a minor user update issue in user update route
+
+## Further Plans On Backend:
+
+- On delete cascade on all required fields
+- Categories table as parent for rooms
+- Notification Systems with websockets
+- Improve websockets with try except blocks and edge cases
+- ...
