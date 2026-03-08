@@ -123,7 +123,11 @@ o/p: PONG ie. redis running
 ## Further Plans On Backend:
 
 - On delete cascade on all required fields
-- Categories table as parent for rooms
+- Categories table as parent for rooms (for things like Hostels, Shutters etc.)
 - Notification Systems with websockets
 - Improve websockets with try except blocks and edge cases
-- ...
+
+## Further Plans On Frontend:
+
+- Decided to make an actual mobile app using flutter (for now might switch to ReactNative) as the frontend of app
+- Pausing the development of app for sometime until I learn flutter properly
