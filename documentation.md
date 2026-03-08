@@ -129,5 +129,5 @@ o/p: PONG ie. redis running
 
 ## Further Plans On Frontend:
 
-- Decided to make an actual mobile app using flutter (for now might switch to ReactNative) as the frontend of app
+- Decided to make an actual mobile app using flutter (for now, might switch to ReactNative) as the frontend of app
 - Pausing the development of app for sometime until I learn flutter properly
